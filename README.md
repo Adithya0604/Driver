@@ -1,12 +1,17 @@
-# React + Vite
+The component is a React form for driver and service details with nested dropdowns.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Originally, nested options were arrays, which made dynamic rendering tricky. We changed them to objects for easier management and updates.
 
-Currently, two official plugins are available:
+The main issue was with the subcategory dropdown rendering multiple times unnecessarily.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This happened because we didn’t check if the selected item actually had options (item.length > 0).
 
-## Expanding the ESLint configuration
+After adding this check, the subcategory dropdown only renders when there are valid options.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+handleChange was updated to reset dependent fields when a parent dropdown changes, keeping nested selections in sync.
+
+Styling was simplified and cleaned for a minimal, readable look.
+
+The code now works correctly for the “General Service” path we tested.
+
+Overall, the small but crucial bug was fixed, and the code is now clean, maintainable, and ready for other service types.
