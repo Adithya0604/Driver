@@ -56,7 +56,27 @@ function Driver() {
     setErrors({});
 
     const newErrors = {};
-    for (let field in formData) {
+
+    // Common required fields
+    const requiredFields = [
+      "VehicleNumber",
+      "DriverName",
+      "DriverContact",
+      "FleetOwnerName",
+      "FleetOwnerContact",
+      "FleetOwnerEmail",
+      "JobType",
+      "Category",
+      "Status", // Always required
+    ];
+
+    // Add SubCategory only for Comprehensive Service
+    if (formData.JobType === "Comprehensive Service") {
+      requiredFields.push("SubCategory");
+    }
+
+    // Validate only required fields
+    for (let field of requiredFields) {
       if (!formData[field].trim()) {
         newErrors[field] = `${field} is required`;
       }
@@ -66,6 +86,7 @@ function Driver() {
       setErrors(newErrors);
       return;
     }
+
     console.log("Form Data Submitted:", formData);
     alert("Form submitted successfully!");
   };
@@ -210,7 +231,8 @@ function Driver() {
         )}
 
         {/* SubCategory */}
-        {formData.Category &&
+        {formData.JobType === "Comprehensive Service" &&
+          formData.Category &&
           selectedCategory &&
           typeof selectedCategory === "object" &&
           !Array.isArray(selectedCategory) && (
